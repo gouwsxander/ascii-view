@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+#ifdef _WIN32
+#include <windows.h>
+#else
 #include <sys/ioctl.h>
+#endif
+
 #include <unistd.h>
 
 #include "../include/argparse.h"
@@ -29,6 +34,24 @@ void print_help(char* exec_alias) {
 
 // Get size of terminal in characters. Returns 1 if successful.
 int try_get_terminal_size(size_t* width, size_t* height) {
+    
+    #ifdef _WIN32
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+
+    // Abort if not a console
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut == INVALID_HANDLE_VALUE)
+        return 0;
+
+    if (GetConsoleScreenBufferInfo(hOut, &csbi)) {
+        *width  = (size_t)(csbi.srWindow.Right - csbi.srWindow.Left + 1);
+        *height = (size_t)(csbi.srWindow.Bottom - csbi.srWindow.Top + 1);
+        return 1;
+    } else {
+        return 0;
+    }
+
+    #else
     struct winsize ws;
 
     // Abort if not terminal
@@ -36,10 +59,14 @@ int try_get_terminal_size(size_t* width, size_t* height) {
         return 0;
     
     if (ioctl(0, TIOCGWINSZ, &ws) == 0) {
-        *width = (size_t) ws.ws_col;
+        *width  = (size_t) ws.ws_col;
         *height = (size_t) ws.ws_row;
         return 1;
+    } else {
+        return 0;
     }
+    #endif
+
 
     return 0;
 }
