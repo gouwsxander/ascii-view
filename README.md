@@ -5,6 +5,7 @@ A command-line tool that displays images as colorized ASCII art in the terminal.
 ![Cover photo](./cover-photos/coverphoto-1.jpg)
 
 ## Features
+
 - **Multi-format support**: Supports JPEG, PNG, BMP, and other common image formats via [stb_image](https://github.com/nothings/stb)
 - **Color terminal output**: Uses ANSI color codes for colors
 - **Intelligent resizing**: Scales images to fit the terminal's constrained dimensions while maintaining aspect ratio
@@ -14,6 +15,7 @@ A command-line tool that displays images as colorized ASCII art in the terminal.
 ## Building
 
 This project can be built with Make:
+
 ```bash
 # Development version
 make
@@ -23,11 +25,13 @@ make release
 ```
 
 To clean build artifacts:
+
 ```bash
 make clean
 ```
 
 Requirements:
+
 - C99-compatible compiler (GCC, Clang)
 - Make build system
 
@@ -44,6 +48,7 @@ Requirements:
 - `-et <threshold>`: Edge detection threshold, range: 0.0 - 4.0 (default 4.0, disabled)
 - `-cr <ratio>`: Height-to-width ratio for characters (default 2.0)
 - `--retro-colors`: Uses 3-bit colors for pixels.
+- `--rainbow`: Animates ascii image with by hueshifting colors
 
 ### Examples
 
@@ -64,6 +69,7 @@ Requirements:
 The images in the `examples` directory are via [Unsplash](https://unsplash.com)
 
 ### Suggestions for getting good looking results
+
 1. If you make your font size smaller, you can make the pictures larger
 2. The results are limited by your terminal's colour scheme
 3. If you squint your eyes the images look great!

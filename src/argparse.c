@@ -31,6 +31,7 @@ void print_help(char* exec_alias) {
     printf("\t-et <threshold>\t\tEdge detection threshold, range: 0.0 - 4.0 (default: %.1f, disabled)\n", DEFAULT_EDGE_THRESHOLD);
     printf("\t-cr <ratio>\t\tHeight-to-width ratio for characters (default: %.1f)\n", DEFAULT_CHARACTER_RATIO);
     printf("\t--retro-colors\t\tUse 3-bit retro color palette (8 colors) instead of 24-bit truecolor\n");
+    printf("\t-r\t\t\tAnimate ascii art with rainbow by shifting colors (q or Q to quit)\n");
 }
 
 // Get size of terminal in characters. Returns 1 if successful.
@@ -74,6 +75,7 @@ args_t parse_args(int argc, char* argv[]) {
         .character_ratio = DEFAULT_CHARACTER_RATIO,
         .edge_threshold = DEFAULT_EDGE_THRESHOLD,
         .use_retro_colors = 0,
+        .use_rainbow_colors = 0
     };
 
     try_get_terminal_size(&args.max_width, &args.max_height);
@@ -104,6 +106,8 @@ args_t parse_args(int argc, char* argv[]) {
             args.character_ratio = atof(argv[++i]);
         else if (!strcmp(argv[i], "--retro-colors"))
             args.use_retro_colors = 1;
+        else if (!strcmp(argv[i], "--rainbow"))
+            args.use_rainbow_colors = 1;
         else
             fprintf(stderr, "Warning: Ignoring invalid or incomplete argument '%s'\n", argv[i]);
     }

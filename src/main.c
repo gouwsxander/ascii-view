@@ -24,7 +24,13 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     
-    print_image(&resized, args.edge_threshold, args.use_retro_colors);
+    //print image or rainbow animation
+    if (!args.use_rainbow_colors) {
+        print_image(&resized, args.edge_threshold, args.use_retro_colors);
+    } else {
+        print_rainbow_image(&resized, args.edge_threshold, args.use_retro_colors);
+    }
+    
     
     free_image(&original);
     free_image(&resized);
