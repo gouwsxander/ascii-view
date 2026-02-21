@@ -6,9 +6,8 @@
 #include <io.h>
 #else
 #include <sys/ioctl.h>
-#endif
-
 #include <unistd.h>
+#endif
 #include "../include/argparse.h"
 
 
@@ -37,7 +36,7 @@ void print_help(char* exec_alias) {
 int try_get_terminal_size(size_t* width, size_t* height) {
 #ifdef _WIN32
 // Windows implementation
-    if (!_isatty(0))
+    if (!_isatty(_fileno(stdout)))
         return 0;
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     if (hConsole == INVALID_HANDLE_VALUE)
@@ -51,7 +50,7 @@ int try_get_terminal_size(size_t* width, size_t* height) {
     *height = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 #else
 // POSIX implementation
-    if (!isatty(0))
+    if (!isatty(STDOUT_FILENO))
         return 0;
     struct winsize ws;
 
@@ -67,14 +66,13 @@ int try_get_terminal_size(size_t* width, size_t* height) {
 
 args_t parse_args(int argc, char* argv[]) {
     // Get variable defaults
-    args_t args = {
-        .file_path = NULL,
-        .max_width = DEFAULT_MAX_WIDTH,
-        .max_height = DEFAULT_MAX_HEIGHT,
-        .character_ratio = DEFAULT_CHARACTER_RATIO,
-        .edge_threshold = DEFAULT_EDGE_THRESHOLD,
-        .use_retro_colors = 0,
-    };
+    args_t args = { 0 };
+    args.file_path = NULL;
+    args.max_width = DEFAULT_MAX_WIDTH;
+    args.max_height = DEFAULT_MAX_HEIGHT;
+    args.character_ratio = DEFAULT_CHARACTER_RATIO;
+    args.edge_threshold = DEFAULT_EDGE_THRESHOLD;
+    args.use_retro_colors = 0;
 
     try_get_terminal_size(&args.max_width, &args.max_height);
 

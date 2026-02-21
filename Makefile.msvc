@@ -1,0 +1,27 @@
+CC = cl
+LINK = link
+CFLAGS = /nologo /W4 /TC /Iinclude /D_CRT_SECURE_NO_WARNINGS
+LDFLAGS = /nologo
+SOURCES = src\argparse.c src\image.c src\main.c src\print_image.c
+OBJECTS = src\argparse.obj src\image.obj src\main.obj src\print_image.obj
+TARGET = ascii-view.exe
+
+!IFDEF RELEASE
+CFLAGS = $(CFLAGS) /O2 /GL
+LDFLAGS = $(LDFLAGS) /LTCG
+!ENDIF
+
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(LINK) $(LDFLAGS) /OUT:$(TARGET) $(OBJECTS)
+
+.c.obj:
+	$(CC) $(CFLAGS) /c $< /Fo$@
+
+release:
+	$(MAKE) /f Makefile.msvc RELEASE=1 clean all
+
+clean:
+	-del /Q src\*.obj 2>nul
+	-del /Q $(TARGET) 2>nul

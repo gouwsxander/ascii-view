@@ -5,8 +5,26 @@
 #include "../include/print_image.h"
 #include "../include/argparse.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
+static void enable_virtual_terminal_processing(void) {
+#ifdef _WIN32
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut == INVALID_HANDLE_VALUE)
+        return;
+    DWORD mode = 0;
+    if (!GetConsoleMode(hOut, &mode))
+        return;
+    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, mode);
+#endif
+}
 
 int main(int argc, char* argv[]) {
+    enable_virtual_terminal_processing();
+
     // Parses arguments
     args_t args = parse_args(argc, argv);
     if (args.file_path == NULL)
