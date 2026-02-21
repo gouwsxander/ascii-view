@@ -13,6 +13,7 @@ A command-line tool that displays images as colorized ASCII art in the terminal.
 
 ## Building
 
+### macOS / Linux (Make)
 This project can be built with Make:
 ```bash
 # Development version
@@ -27,9 +28,24 @@ To clean build artifacts:
 make clean
 ```
 
+### Windows (MinGW + Make)
+Use MinGW-w64 with GNU Make (`mingw32-make`):
+```powershell
+mingw32-make
+.\ascii-view.exe examples\puffin.jpg
+```
+
+### Windows (MSVC + NMake)
+Run from a "Developer Command Prompt for VS":
+```powershell
+nmake /f Makefile.msvc
+.\ascii-view.exe examples\puffin.jpg
+```
+
 Requirements:
 - C99-compatible compiler (GCC, Clang)
-- Make build system
+- Make build system (macOS/Linux)
+- MinGW-w64 + GNU Make (for `makefile`) OR MSVC Build Tools + NMake (for `Makefile.msvc`)
 
 ## Usage
 
